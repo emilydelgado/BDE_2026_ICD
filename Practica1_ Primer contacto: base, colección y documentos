@@ -1,0 +1,160 @@
+// 1. Crear la base de datos
+use ventas_online
+
+// 2. Crear la colección productos
+db.createCollection("productos")
+
+// 3. Comprobar
+show collections
+
+// 4. Insertar el primer documento
+db.productos.insertOne({
+  sku: "P001",
+  nombre: "Laptop Pro",
+  categoria: "Computo",
+  precio: 18500,
+  stock: 12
+})
+
+// 5. Consultar la colección
+db.productos.find()
+
+// 6. Localizar producto P001
+db.productos.find({ sku: "P001" })
+
+// 7. Insertar segundo documento con esquema flexible
+db.productos.insertOne({
+  sku: "P002",
+  nombre: "Mouse inalambrico",
+  categoria: "Accesorios",
+  precio: 450,
+  stock: 80,
+  color: "negro",
+  activo: true
+})
+
+// 8. Consultar
+db.productos.find()
+
+// 9. Consulta adicional
+db.productos.find({ activo: true })
+
+// 10. Insertar documento con array
+db.productos.insertOne({
+  sku: "P003",
+  nombre: "Audifonos BT",
+  categoria: "Audio",
+  precio: 1250,
+  stock: 35,
+  bluetooth: true,
+  etiquetas: ["audio", "movilidad"],
+  activo: true
+})
+
+// 11. Consultar producto P003
+db.productos.find({ sku: "P003" })
+
+// 12. Insertar documento con subdocumento
+db.productos.insertOne({
+  sku: "P004",
+  nombre: "Monitor 27",
+  categoria: "Computo",
+  precio: 6200,
+  stock: 18,
+  especificaciones: {
+    resolucion: "2560x1440",
+    hz: 144
+  },
+  etiquetas: ["monitor", "gaming"]
+})
+
+// 13. Consulta sobre campo interno
+db.productos.find({ "especificaciones.hz": 144 })
+
+// 14. Insertar varios documentos
+db.productos.insertMany([
+  {
+    sku: "P005",
+    nombre: "Teclado mecanico",
+    categoria: "Accesorios",
+    precio: 1600,
+    stock: 27,
+    etiquetas: ["mecanico", "gaming"],
+    activo: true
+  },
+  {
+    sku: "P006",
+    nombre: "Webcam HD",
+    categoria: "Accesorios",
+    precio: 980,
+    stock: 40,
+    etiquetas: ["video", "usb"],
+    activo: true
+  },
+  {
+    sku: "P007",
+    nombre: "SSD 1TB",
+    categoria: "Almacenamiento",
+    precio: 1450,
+    stock: 30,
+    etiquetas: ["ssd", "almacenamiento"]
+  }
+])
+
+// 15. Consultar productos con etiqueta gaming
+db.productos.find({ etiquetas: "gaming" })
+
+// 16. Consultar todos los productos
+db.productos.find()
+
+// 17. Contar documentos
+db.productos.countDocuments()
+
+// 18. Contar solo accesorios
+db.productos.countDocuments({ categoria: "Accesorios" })
+
+// 19. Identificar tipos
+db.productos.find({ sku: "P001" })
+db.productos.find({ etiquetas: "gaming" })
+db.productos.find({ "especificaciones.hz": 144 })
+
+// 20. Ejercicios de la Práctica 1
+// Insertar producto P008
+db.productos.insertOne({
+  sku: "P008",
+  nombre: "Bocina Bluetooth",
+  categoria: "Audio",
+  precio: 890,
+  stock: 25,
+  etiquetas: ["audio", "bluetooth"],
+  activo: true
+})
+
+// Insertar productos P009–P050
+db.productos.insertMany([
+  { sku: "P009", nombre: "Tablet 10", categoria: "Computo", precio: 5200, stock: 15,
+    etiquetas: ["tablet", "movilidad"], activo: true,
+    especificaciones: { pantalla: "10 pulgadas", almacenamiento: "128GB" } },
+  { sku: "P010", nombre: "Memoria USB 64GB", categoria: "Almacenamiento", precio: 320, stock: 100,
+    etiquetas: ["usb", "almacenamiento"], activo: true },
+  { sku: "P011", nombre: "Microfono USB", categoria: "Audio", precio: 1350, stock: 10,
+    etiquetas: ["audio", "usb"], activo: true },
+  // … continúa con P012 hasta P050 según el documento
+])
+
+// Consultas de práctica
+db.productos.find()
+db.productos.find({ sku: "P003" })
+db.productos.find({ categoria: "Computo" })
+db.productos.find({ categoria: "Accesorios" })
+db.productos.find({ activo: true })
+db.productos.find({ etiquetas: "gaming" })
+db.productos.find({ etiquetas: "usb" })
+db.productos.find({ "especificaciones.hz": 144 })
+db.productos.find({ "especificaciones.resolucion": "2560x1440" })
+db.productos.countDocuments()
+db.productos.countDocuments({ categoria: "Accesorios" })
+db.productos.find({ sku: "P008" })
+db.productos.find({ sku: "P009" })
+db.productos.countDocuments({ categoria: "Almacenamiento" })
+db.productos.find({ etiquetas: "movilidad" })
