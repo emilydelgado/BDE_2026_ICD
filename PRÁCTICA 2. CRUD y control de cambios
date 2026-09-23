@@ -1,0 +1,92 @@
+// 1. Preparar el entorno de trabajo
+use ventas_online
+
+// Comprobar número de documentos
+db.productos.countDocuments()   // Resultado esperado: 50
+
+// 2. Consultar documentos
+// 2.1 Consultar todos los productos
+db.productos.find()
+
+// 2.2 Buscar un producto mediante su SKU
+db.productos.find({ sku: "P001" })
+
+// 2.3 Consultar una categoría
+db.productos.find({ categoria: "Computo" })
+
+// 3. Actualizaciones
+// 3.1 Actualizar un campo con $set
+db.productos.find({ sku: "P001" })
+db.productos.updateOne(
+  { sku: "P001" },
+  { $set: { precio: 17990 } }
+)
+db.productos.find({ sku: "P001" })
+
+// 3.2 Incrementar un valor con $inc
+db.productos.find({ sku: "P001" })
+db.productos.updateOne(
+  { sku: "P001" },
+  { $inc: { stock: 5 } }
+)
+db.productos.find({ sku: "P001" })
+
+// 3.3 Modificar varios campos simultáneamente
+db.productos.find({ sku: "P002" })
+db.productos.updateOne(
+  { sku: "P002" },
+  { $set: { precio: 425 }, $inc: { stock: 5 } }
+)
+db.productos.find({ sku: "P002" })
+
+// 3.4 Agregar un elemento a un array con $addToSet
+db.productos.find({ sku: "P004" })
+db.productos.updateOne(
+  { sku: "P004" },
+  { $addToSet: { etiquetas: "oferta" } }
+)
+db.productos.find({ sku: "P004" })
+
+// 3.5 Actualizar varios documentos con updateMany()
+db.productos.find({ categoria: "Audio" })
+db.productos.updateMany(
+  { categoria: "Audio" },
+  { $addToSet: { etiquetas: "promocion" } }
+)
+db.productos.find({ categoria: "Audio" })
+
+// 3.6 Agregar y eliminar un campo con $set y $unset
+db.productos.find({ sku: "P011" })
+db.productos.updateOne(
+  { sku: "P011" },
+  { $set: { temporal: true } }
+)
+db.productos.find({ sku: "P011" })
+db.productos.updateOne(
+  { sku: "P011" },
+  { $unset: { temporal: "" } }
+)
+db.productos.find({ sku: "P011" })
+
+// 4. Eliminación segura
+// 4.1 Eliminar un documento con deleteOne()
+db.productos.insertOne({
+  sku: "TEMP01",
+  nombre: "Producto temporal",
+  categoria: "Prueba",
+  precio: 100,
+  stock: 1
+})
+db.productos.find({ sku: "TEMP01" })
+db.productos.deleteOne({ sku: "TEMP01" })
+db.productos.find({ sku: "TEMP01" })
+
+// 4.2 Eliminar varios documentos con deleteMany()
+db.productos.insertMany([
+  { sku: "TEST01", nombre: "Producto prueba 1", categoria: "Prueba", precio: 100, stock: 1 },
+  { sku: "TEST02", nombre: "Producto prueba 2", categoria: "Prueba", precio: 200, stock: 2 },
+  { sku: "TEST03", nombre: "Producto prueba 3", categoria: "Prueba", precio: 300, stock: 3 }
+])
+db.productos.find({ categoria: "Prueba" })
+db.productos.deleteMany({ categoria: "Prueba" })
+db.productos.find({ categoria: "Prueba" })
