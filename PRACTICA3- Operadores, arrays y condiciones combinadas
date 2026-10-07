@@ -1,0 +1,117 @@
+use ventas_online 
+db.productos.countDocuments() 
+db.productos.find({ 
+precio: { $eq: 1450 } 
+})
+db.productos.find({ 
+precio: 1450 
+})
+db.productos.find({ 
+categoria: { $ne: "Audio" } 
+}) 
+db.productos.find({ 
+precio: { $gt: 1000 } 
+}) 
+db.productos.find({ 
+precio: { $gte: 1000 } 
+}) 
+db.productos.find({ 
+stock: { $lt: 20 } 
+}) 
+db.productos.find({ 
+precio: { $lte: 1500 } 
+}) 
+db.productos.find({ 
+precio: { 
+$gte: 1000, 
+$lte: 10000 
+} 
+}) 
+db.productos.find({ 
+stock: { 
+$gte: 15, 
+$lte: 40 
+} 
+}) 
+db.productos.find({ 
+precio: { 
+$gt: 500, 
+$lt: 2000 
+} 
+}) 
+db.productos.find({ 
+categoria: { 
+$in: ["Audio", "Computo"] 
+} 
+}) 
+db.productos.find({ 
+categoria: { 
+$nin: ["Audio", "Computo"] 
+} 
+}) db.productos.find({ 
+$and:[ 
+{precio:{$lt:5000}}, 
+{stock:{$gt:20}} 
+] 
+}) 
+db.productos.find({ 
+$or:[ 
+{categoria:"Audio"}, 
+{stock:{$lt:15}} 
+] 
+}) 
+db.productos.find({ 
+$nor:[ 
+{categoria:"Audio"}, 
+{precio:{$gt:5000}} 
+] 
+}) 
+db.productos.find({ 
+precio:{ 
+$not:{$gt:5000} 
+} 
+}) 
+db.productos.find({ 
+especificaciones:{$exists:false} 
+})
+db.productos.find({ 
+bluetooth:{$exists:true} 
+}) 
+db.productos.find({ 
+etiquetas:"gaming" 
+})
+db.productos.find({ 
+etiquetas:{ 
+$all:["audio","promocion"] 
+} 
+}) 
+db.productos.find({ 
+etiquetas:{$size:2} 
+}) 
+db.productos.find({ 
+etiquetas:{$exists:true} 
+})
+db.productos.find({ 
+etiquetas:{$exists:false} 
+}) 
+db.productos.find({ 
+categoria:"Audio", 
+precio:{$gt:1000} 
+})
+db.productos.find({ 
+categoria:"Computo", 
+stock:{$lt:20} 
+})
+db.productos.find({ 
+categoria:{$in:["Audio","Accesorios"]}, 
+precio:{$lt:1500} 
+})
+db.productos.find({ 
+etiquetas:"gaming", 
+stock:{$gt:10} 
+})
+db.productos.find({ 
+categoria:{$in:["Audio","Computo"]}, 
+precio:{$gt:1000}, 
+stock:{$gt:15} 
+}) 
