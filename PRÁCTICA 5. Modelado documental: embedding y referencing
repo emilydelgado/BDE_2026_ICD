@@ -1,0 +1,440 @@
+use ventas_online
+
+show collections
+
+db.productos.countDocuments()
+
+db.createCollection("clientes")
+db.createCollection("proveedores")
+db.createCollection("ventas")
+
+show collections
+
+db.clientes.insertOne({
+    cliente_id: "C001",
+    nombre: "Ana López",
+    correo: "ana.lopez@email.com",
+    telefono: "6671234567",
+    direccion: {
+        calle: "Álvaro Obregón",
+        numero: 120,
+        ciudad: "Culiacán",
+        estado: "Sinaloa",
+        cp: "80000"
+    },
+    preferencias: ["tecnologia", "electronica"],
+    activo: true
+})
+
+db.clientes.findOne({cliente_id: "C001"})
+
+db.clientes.find(
+    {cliente_id: "C001"},
+    {_id: 0, nombre: 1, "direccion.ciudad": 1}
+)
+
+db.clientes.insertOne({
+    cliente_id: "C002",
+    nombre: "Carlos Martínez",
+    correo: "carlos@email.com",
+    telefono: "6672345678",
+    direccion: {
+        ciudad: "Mazatlán",
+        estado: "Sinaloa",
+        cp: "82000"
+    },
+    preferencias: [
+        "computacion",
+        "accesorios",
+        "audio"
+    ],
+    activo: true
+})
+
+db.clientes.find(
+    {preferencias: "accesorios"},
+    {_id: 0, cliente_id: 1, nombre: 1}
+)
+
+db.proveedores.insertMany([
+    {
+        proveedor_id: "PR001",
+        nombre: "Tecnología del Pacífico",
+        ciudad: "Culiacán",
+        estado: "Sinaloa",
+        activo: true
+    },
+    {
+        proveedor_id: "PR002",
+        nombre: "Distribuidora Digital",
+        ciudad: "Guadalajara",
+        estado: "Jalisco",
+        activo: true
+    },
+    {
+        proveedor_id: "PR003",
+        nombre: "Computación del Norte",
+        ciudad: "Monterrey",
+        estado: "Nuevo León",
+        activo: true
+    }
+])
+
+db.proveedores.find()
+
+db.proveedores.countDocuments()
+
+db.productos.findOne()
+
+db.productos.updateOne(
+    {sku: "P001"},
+    {$set: {proveedor_id: "PR001"}}
+)
+
+db.productos.findOne(
+    {sku: "P001"},
+    {_id: 0, sku: 1, nombre: 1, proveedor_id: 1}
+)
+
+db.productos.find(
+    {},
+    {_id: 0, sku: 1, nombre: 1, precio: 1}
+).limit(5)
+
+db.ventas.insertOne({
+    venta_id: "V001",
+    cliente_id: "C001",
+    fecha: ISODate("2026-09-01T10:30:00Z"),
+    items: [
+        {
+            sku: "P001",
+            cantidad: 1,
+            precio: 1200
+        },
+        {
+            sku: "P002",
+            cantidad: 2,
+            precio: 350
+        }
+    ],
+    total: 1900,
+    canal: "online",
+    estado: "completada"
+})
+
+db.ventas.find({
+    "items.sku": "P001"
+})
+
+db.ventas.find(
+    {"items.sku": "P001"},
+    {
+        _id: 0,
+        venta_id: 1,
+        cliente_id: 1,
+        "items.sku": 1
+    }
+)
+
+db.ventas.find({
+    cliente_id: "C001"
+})
+
+db.clientes.findOne({
+    cliente_id: "C001"
+})
+
+db.ventas.insertOne({
+    venta_id: "V002",
+    cliente_id: "C001",
+    fecha: ISODate("2026-09-03T16:15:00Z"),
+    items: [
+        {
+            sku: "P003",
+            cantidad: 1,
+            precio: 800
+        }
+    ],
+    total: 800,
+    canal: "tienda",
+    estado: "completada"
+})
+
+db.ventas.find(
+    {cliente_id: "C001"},
+    {_id: 0, venta_id: 1, cliente_id: 1, fecha: 1}
+)
+
+
+// EJERCICIO 1
+// Completar clientes hasta C050
+
+for (let i = 3; i <= 50; i++) {
+    let id = "C" + i.toString().padStart(3, "0");
+
+    db.clientes.insertOne({
+        cliente_id: id,
+        nombre: "Cliente " + i,
+        correo: "cliente" + i + "@email.com",
+        telefono: "667000" + i.toString().padStart(4, "0"),
+        direccion: {
+            ciudad: "Culiacán",
+            estado: "Sinaloa",
+            cp: "80000"
+        },
+        preferencias: [
+            "tecnologia",
+            "electronica"
+        ],
+        activo: true
+    });
+}
+
+db.clientes.countDocuments()
+
+db.clientes.find(
+    {},
+    {
+        _id: 0,
+        cliente_id: 1,
+        nombre: 1,
+        correo: 1,
+        telefono: 1,
+        direccion: 1,
+        preferencias: 1,
+        activo: 1
+    }
+).sort({cliente_id: 1})
+
+
+// EJERCICIO 2
+// Completar proveedores hasta PR010
+
+db.proveedores.insertMany([
+    {
+        proveedor_id: "PR004",
+        nombre: "Proveedor Central",
+        ciudad: "Culiacán",
+        estado: "Sinaloa",
+        activo: true
+    },
+    {
+        proveedor_id: "PR005",
+        nombre: "Soluciones Tecnológicas",
+        ciudad: "Hermosillo",
+        estado: "Sonora",
+        activo: true
+    },
+    {
+        proveedor_id: "PR006",
+        nombre: "Electrónica del Pacífico",
+        ciudad: "Mazatlán",
+        estado: "Sinaloa",
+        activo: true
+    },
+    {
+        proveedor_id: "PR007",
+        nombre: "Suministros Digitales",
+        ciudad: "Tijuana",
+        estado: "Baja California",
+        activo: true
+    },
+    {
+        proveedor_id: "PR008",
+        nombre: "Tecnología Nacional",
+        ciudad: "Ciudad de México",
+        estado: "Ciudad de México",
+        activo: true
+    },
+    {
+        proveedor_id: "PR009",
+        nombre: "Importaciones del Norte",
+        ciudad: "Chihuahua",
+        estado: "Chihuahua",
+        activo: true
+    },
+    {
+        proveedor_id: "PR010",
+        nombre: "Distribuidora Tecnológica",
+        ciudad: "León",
+        estado: "Guanajuato",
+        activo: true
+    }
+])
+
+db.proveedores.countDocuments()
+
+db.proveedores.find().sort({proveedor_id: 1})
+
+
+// EJERCICIO 3
+// Asociar los 50 productos con los 10 proveedores
+
+db.productos.updateMany(
+    {},
+    [
+        {
+            $set: {
+                proveedor_id: {
+                    $concat: [
+                        "PR",
+                        {
+                            $toString: {
+                                $add: [
+                                    {
+                                        $mod: [
+                                            {
+                                                $toInt: {
+                                                    $substr: [
+                                                        "$sku",
+                                                        1,
+                                                        -1
+                                                    ]
+                                                }
+                                            },
+                                            10
+                                        ]
+                                    },
+                                    1
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+)
+
+db.productos.updateMany(
+    {proveedor_id: {$in: ["PR1","PR2","PR3","PR4","PR5","PR6","PR7","PR8","PR9"]}},
+    {}
+)
+
+db.productos.find(
+    {},
+    {
+        _id: 0,
+        sku: 1,
+        nombre: 1,
+        categoria: 1,
+        proveedor_id: 1
+    }
+).sort({
+    proveedor_id: 1,
+    nombre: 1
+})
+
+
+// EJERCICIO 3 - FORMA SIMPLE Y SEGURA
+// Asignar proveedores por rangos de SKU
+
+db.productos.updateMany(
+    {sku: {$in: ["P001","P011","P021","P031","P041"]}},
+    {$set: {proveedor_id: "PR001"}}
+)
+
+db.productos.updateMany(
+    {sku: {$in: ["P002","P012","P022","P032","P042"]}},
+    {$set: {proveedor_id: "PR002"}}
+)
+
+db.productos.updateMany(
+    {sku: {$in: ["P003","P013","P023","P033","P043"]}},
+    {$set: {proveedor_id: "PR003"}}
+)
+
+db.productos.updateMany(
+    {sku: {$in: ["P004","P014","P024","P034","P044"]}},
+    {$set: {proveedor_id: "PR004"}}
+)
+
+db.productos.updateMany(
+    {sku: {$in: ["P005","P015","P025","P035","P045"]}},
+    {$set: {proveedor_id: "PR005"}}
+)
+
+db.productos.updateMany(
+    {sku: {$in: ["P006","P016","P026","P036","P046"]}},
+    {$set: {proveedor_id: "PR006"}}
+)
+
+db.productos.updateMany(
+    {sku: {$in: ["P007","P017","P027","P037","P047"]}},
+    {$set: {proveedor_id: "PR007"}}
+)
+
+db.productos.updateMany(
+    {sku: {$in: ["P008","P018","P028","P038","P048"]}},
+    {$set: {proveedor_id: "PR008"}}
+)
+
+db.productos.updateMany(
+    {sku: {$in: ["P009","P019","P029","P039","P049"]}},
+    {$set: {proveedor_id: "PR009"}}
+)
+
+db.productos.updateMany(
+    {sku: {$in: ["P010","P020","P030","P040","P050"]}},
+    {$set: {proveedor_id: "PR010"}}
+)
+
+
+// EJERCICIO 4
+// Verificar referencias de proveedores
+
+db.productos.find(
+    {},
+    {
+        _id: 0,
+        sku: 1,
+        nombre: 1,
+        categoria: 1,
+        proveedor_id: 1
+    }
+).sort({
+    proveedor_id: 1,
+    nombre: 1
+})
+
+
+// EJERCICIO 5
+// Completar ventas hasta V100
+
+for (let i = 3; i <= 100; i++) {
+    let ventaId = "V" + i.toString().padStart(3, "0");
+    let clienteId = "C" + (((i - 1) % 50) + 1).toString().padStart(3, "0");
+    let productoId = "P" + (((i - 1) % 50) + 1).toString().padStart(3, "0");
+
+    db.ventas.insertOne({
+        venta_id: ventaId,
+        cliente_id: clienteId,
+        fecha: ISODate("2026-09-05T12:30:00Z"),
+        items: [
+            {
+                sku: productoId,
+                cantidad: 2,
+                precio: 450
+            }
+        ],
+        total: 900,
+        canal: i % 2 === 0 ? "online" : "tienda",
+        estado: "completada"
+    });
+}
+
+db.ventas.countDocuments()
+
+db.ventas.find(
+    {},
+    {
+        _id: 0,
+        venta_id: 1,
+        cliente_id: 1,
+        fecha: 1,
+        items: 1,
+        total: 1,
+        canal: 1,
+        estado: 1
+    }
+).sort({venta_id: 1})
